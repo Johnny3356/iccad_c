@@ -1,0 +1,30 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "C++ Debug",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}\\bin\\main.exe", // 編譯後的執行檔路徑
+            "args": [   // 可選的命令列參數
+                "4",
+                "0.5",
+                "${workspaceFolder}\\pa2_testcases\\super1.def",
+                "${workspaceFolder}\\super1.def"
+                ], 
+            "stopAtEntry": false, // 設為 true 表示程式會在入口點暫停
+            "cwd": "${workspaceFolder}", // 程式的工作目錄
+            "environment": [],
+            "externalConsole": true, // 是否使用外部終端
+            "MIMode": "gdb", // 若使用 GCC，選擇 gdb；若使用 MSVC，選擇 lldb 或 cppvsdbg
+            "miDebuggerPath": "C:\\MinGW\\bin\\gdb.exe", // 指定 gdb 的路徑
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ],"preLaunchTask": "C/C++: g++.exe 建置使用中檔案" // 需要在 tasks.json 中配置
+        }
+    ]
+}
