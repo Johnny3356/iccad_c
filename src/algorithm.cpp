@@ -1,5 +1,5 @@
 #include "class_def.h"
 
-extern die DIE;
+extern die bigdie;
   
 

@@ -4,6 +4,11 @@
 
 #include "class_def.h"
 
+enum ROW_DIRECTION{
+    N = 0,
+    FS = 1
+};
+
 class row{
 public:
     row() {}
@@ -30,15 +35,12 @@ private:
     int origX,origY,numX,numY,stepX,stepY;
 };
 
+
+
 class site{
 public:
     site() {}
 private:
     string name;
 };
-enum ROW_DIRECTION{
-    N = 0,
-    FS = 1
-};
-
 #endif

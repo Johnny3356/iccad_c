@@ -9,8 +9,7 @@ NTUST EE B11130024 Yao-An,Lo
 #define ARGC_NUMS 5
 #define DEBUG 1 // 1: open debug mode
 
-string input_file,output_file;
-die DIE;
+die bigdie;
 
 int main(int argc, char** argv) {
     auto start = chrono::high_resolution_clock::now();      // get the start time

@@ -5,7 +5,7 @@
 #include "class_def.h"
 
 void parser();
-void def_file_in(die &bdie);
+// void def_file_in(die &bdie);
 void nets_file_in();
 void nodes_file_in();
 void pl_file_in();
