@@ -95,7 +95,7 @@ void def_file_in(die &bigdie,vector<row>&rows,track trackk,gcellgrid &grid){
 }
 
 void file_out(){
-
+    int a;
 }
 void nets_file_in(){
 
