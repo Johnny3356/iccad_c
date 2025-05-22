@@ -10,15 +10,19 @@ class die;
 // component_def.h
 class component;
 
-// pin_def.h
-class pin;
-
 // net_def.h
 class net;
+
+// net_def.h
+class pin;
 
 // row_def.h
 class row;
 class site;
+
+//track_def.h
+class track;
+class gcellgrid;
 
 // layer_def.h
 class layer;
