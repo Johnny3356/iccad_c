@@ -1,7 +1,7 @@
 #ifndef _NETDEF_H
 #define _NETDEF_H
 #include "bits/stdc++.h"
-#include "layer_def.h"
+
 #include "class_def.h"
 
 class net{

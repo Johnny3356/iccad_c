@@ -3,8 +3,6 @@
 #include "bits/stdc++.h"
 
 #include "class_def.h"
-#include "component_def.h"
-#include "net_def.h"
 
 class die{
 public:

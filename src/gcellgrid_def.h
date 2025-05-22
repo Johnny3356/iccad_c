@@ -1,7 +1,7 @@
 #ifndef _GCELLGRIDDEF_H
 #define _GCELLGRIDDEF_H
 #include "bits/stdc++.h"
-#include "layer_def.h"
+
 #include "class_def.h"
 
 class gcellgrid{

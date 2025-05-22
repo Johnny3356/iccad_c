@@ -2,6 +2,14 @@
 #define _CLASSDEF_
 #include "bits/stdc++.h"
 
+#include "component_def.h"
+#include "die_def.h"
+#include "row_def.h"
+#include "track_def.h"
+#include "gcellgrid_def.h"
+#include "layer_def.h"
+#include "net_def.h"
+
 using namespace std;
 
 // die_def.h

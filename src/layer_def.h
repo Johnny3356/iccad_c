@@ -1,7 +1,7 @@
 #ifndef _LAYERDEF_
 #define _LAYERDEF_
 #include "bits/stdc++.h"
-#include "track_def.h"
+
 #include "class_def.h"
 
 class layer{

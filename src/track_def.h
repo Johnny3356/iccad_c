@@ -1,7 +1,7 @@
 #ifndef _TRACKDEF_H
 #define _TRACKDEF_H
 #include "bits/stdc++.h"
-#include "layer_def.h"
+
 #include "class_def.h"
 
 class track{
