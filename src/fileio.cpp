@@ -6,11 +6,12 @@ ifstream ifile;
 
 void parser(track trackk,gcellgrid &grid){
     // def_file_in(bigdie,rows,trackk,grid);
-    nets_file_in();
-    nodes_file_in();
-    pl_file_in();
-    scl_file_in();
-    v_file_in();
+    string node_file = "",pl_file = "",scl_file = "",v_file = "",net_file = "";
+    nets_file_in(net_file);
+    nodes_file_in(node_file);
+    pl_file_in(pl_file);
+    scl_file_in(scl_file);
+    v_file_in(v_file);
 }
 
 // void def_file_in(die &bigdie,vector<row>&rows,track trackk,gcellgrid &grid){
@@ -98,7 +99,7 @@ void parser(track trackk,gcellgrid &grid){
 void file_out(){
 
 }
-void nets_file_in(){
+void nets_file_in(string input_file){
 
 }
 void nodes_file_in(string input_file){
@@ -191,6 +192,9 @@ void pl_file_in(string input_file){
     ifile.close();
 
 }
-void scl_file_in(){
+void scl_file_in(string input_file){
+
+}
+void v_file_in(string input_file){
 
 }
