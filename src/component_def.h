@@ -24,6 +24,9 @@ public:
     void set_macro_name(string s){
         name = s;
     }
+    void set_macro_orientation(string s){
+        name = s;
+    }
 private:
     string name;
     CELL_DIRECTION direction;

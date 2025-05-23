@@ -43,11 +43,12 @@ public:
       } 
     }
     // 对 macro 同理
-    void UpdateMacroPl(const std::string &name, int x, int y) {
+    void UpdateMacroPl(const string &name,const string &ori, int x, int y) {
       auto it = macroIndex.find(name);
       if (it != macroIndex.end()) {
         size_t idx = it->second;
         macros[idx].set_macro_x_y(x, y);
+        macros[idx].set_macro_orientation(ori);
       } 
     }
 

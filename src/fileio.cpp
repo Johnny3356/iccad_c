@@ -75,37 +75,18 @@ void pl_file_in(string input_file){
         cout << "Error opening file: " << input_file << endl;
         exit(1);
     }
-
+    
     while (ifile >> label) {
-        ifile >> temp >> temp;
-        for(int i=0;i<bigdie.get_num_nodes_terminal();++i){
-                ifile >> word >> x1 >> y1 >> temp >> word2 >> temp;
-                pin pi;
-                pi.set_pin_x_y(x1,y1);
-                pi.set_pin_name(word);
-                bigdie.set_pin_vector(pi);
-            }
-        if (label == "NumNodes") {
-            ifile >> temp >> x1;
-            bigdie.set_num_nodes(x1);
-        }
-        else if(label == "NumTerminals"){
-            ifile >> temp >> x1;
-            bigdie.set_num_nodes_terminal(x1);
+        ifile >> temp;
+        if (label == "1.0") {
             for(int i=0;i<bigdie.get_num_nodes_terminal();++i){
-                ifile >> word >> x1 >> x2 >> temp;
-                pin pi;
-                pi.set_weight_height_zero(x1,x2);
-                pi.set_pin_name(word);
-                bigdie.set_pin_vector(pi);
+                ifile >> word >> x1 >> y1 >> temp >> word2 >> temp;
+                bigdie.UpdatePinPl(word,word2,x1,y1);
             }
         }
         else{
-            macro m;
-            m.set_macro_name(label);
-            ifile >> x1 >> x2;
-            m.set_weight_height(x1,x2);
-            bigdie.set_macro_vector(m);
+            ifile >> word >> x1 >> y1 >> temp >> word2;
+            bigdie.UpdateMacroPl(word,word2,x1,y1);
         }
     }
     ifile.close();
