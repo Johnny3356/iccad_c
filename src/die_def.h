@@ -33,7 +33,7 @@ public:
     // --- node parser 來建立向量，不用哈希表
 
     // --- pl parser 用的 ---
-    void addOrUpdatePinPl(const string &name, const string &ori, int x, int y) {
+    void UpdatePinPl(const string &name, const string &ori, int x, int y) {
       auto it = pinIndex.find(name);
       if (it != pinIndex.end()) {
         // 已存在，只更新坐标
@@ -43,7 +43,7 @@ public:
       } 
     }
     // 对 macro 同理
-    void addOrUpdateMacroPl(const std::string &name, int x, int y) {
+    void UpdateMacroPl(const std::string &name, int x, int y) {
       auto it = macroIndex.find(name);
       if (it != macroIndex.end()) {
         size_t idx = it->second;
