@@ -7,12 +7,20 @@
 class net{
 public:
     net() {}
+    void set_net_name(string s){
+        name = s;
+    }
+    void set_pin_amount(int x){
+        pin_amount = x;
+    }
 private:
+    string name,input_or_output;
+    int xoffset,yoffset,pin_amount;
 };
 
-enum NODE_TYPE{
-    node,
-    
+enum NET_TYPE{
+    input,
+    output
 };
 enum PIN_LOCATION{
     node,
@@ -37,7 +45,7 @@ public:
         orientation = s;
     }
 private:
-    NODE_TYPE type;
+    //NODE_TYPE type;
     int weight,height,x,y;
     string name,orientation;
     layer layerr;
