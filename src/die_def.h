@@ -30,10 +30,10 @@ public:
       macros.push_back(m);
     }
 
-    // --- node parser 來建立向量，不用哈希表
+    // --- node parser 來建立向量，同時建立哈希表
 
     // --- pl parser 用的 ---
-    void UpdatePinPl(const string &name, const string &ori, int x, int y) {
+    void Update_Pin_map_Pl(const string &name, const string &ori, int x, int y) {
       auto it = pinIndex.find(name);
       if (it != pinIndex.end()) {
         // 已存在，只更新坐标
@@ -43,13 +43,25 @@ public:
       } 
     }
     // 对 macro 同理
-    void UpdateMacroPl(const string &name,const string &ori, int x, int y) {
+    void Add_Macro_map_Pl(const string &name, int x) {
+      auto it = macroIndex.find(name);
+      if (it != macroIndex.end()) {
+        macroIndex.emplace(name,x);
+      } 
+    }
+    void Update_Macro_mapPl(const string &name,const string &ori, int x, int y) {
       auto it = macroIndex.find(name);
       if (it != macroIndex.end()) {
         size_t idx = it->second;
         macros[idx].set_macro_x_y(x, y);
         macros[idx].set_macro_orientation(ori);
       } 
+    }
+    void set_nets_size(int x){
+      nets.resize(x);
+    }
+    void set_pins_size(int x){
+      pins.resize(x);
     }
 
 private:

@@ -19,12 +19,44 @@ void file_out(){
 
 }
 void nets_file_in(string input_file){
+    string word,word2,word3,word4;
+    int x1,y1,x2,y2,width;
 
+    string label;
+    string temp;
+
+    ifile.open(input_file);
+
+    if (!ifile.is_open()){
+        cout << "Error opening file: " << input_file << endl;
+        exit(1);
+    }
+
+    while (ifile >> label) {
+        if (label == "NumNets") {
+            ifile >> temp >> x1;
+            bigdie.set_nets_size(x1);
+        }
+        else if(label == "NumPins"){
+            ifile >> temp >> x1;
+            bigdie.set_pins_size(x1);
+        }
+        else if(label == "NetDegree"){
+            ifile >> temp >> x1 >> word;
+            net n;
+            n.set_net_name(word);
+            n.set_pin_amount(x1);
+            ifile >> word >> word2 >> temp >> x1 >> y1 >> temp >> temp >> temp >> word;
+
+        }
+    }
+
+    ifile.close();
 }
 void nodes_file_in(string input_file){
     string word,word2,word3,word4;
     int x1,y1,x2,y2,width;
-
+    int count = 0;
     string label;
     string temp;
 
@@ -45,10 +77,12 @@ void nodes_file_in(string input_file){
             bigdie.set_num_nodes_terminal(x1);
             for(int i=0;i<bigdie.get_num_nodes_terminal();++i){
                 ifile >> word >> x1 >> x2 >> temp;
-                pin pi;
-                pi.set_weight_height_zero(x1,x2);
-                pi.set_pin_name(word);
-                bigdie.set_pin_vector(pi);
+                macro mm;
+                mm.set_weight_height(x1,x2);
+                mm.set_macro_name(word);
+                bigdie.set_macro_vector(mm);
+                bigdie.Add_Macro_map_Pl(word, count);
+                count++;
             }
         }
         else{
@@ -57,6 +91,8 @@ void nodes_file_in(string input_file){
             ifile >> x1 >> x2;
             m.set_weight_height(x1,x2);
             bigdie.set_macro_vector(m);
+            bigdie.Add_Macro_map_Pl(label, count);
+            count++;
         }
     }
 
@@ -75,18 +111,18 @@ void pl_file_in(string input_file){
         cout << "Error opening file: " << input_file << endl;
         exit(1);
     }
-    
+
     while (ifile >> label) {
         ifile >> temp;
         if (label == "1.0") {
             for(int i=0;i<bigdie.get_num_nodes_terminal();++i){
                 ifile >> word >> x1 >> y1 >> temp >> word2 >> temp;
-                bigdie.UpdatePinPl(word,word2,x1,y1);
+                bigdie.Update_Macro_mapPl(word,word2,x1,y1);
             }
         }
         else{
             ifile >> word >> x1 >> y1 >> temp >> word2;
-            bigdie.UpdateMacroPl(word,word2,x1,y1);
+            bigdie.Update_Macro_mapPl(word,word2,x1,y1);
         }
     }
     ifile.close();
