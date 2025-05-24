@@ -7,9 +7,9 @@ ifstream ifile;
 void parser(){
     // def_file_in(bigdie,rows,trackk,grid);
     string node_file = "",pl_file = "",scl_file = "",v_file = "",net_file = "";
-    nets_file_in(net_file);
     nodes_file_in(node_file);
     pl_file_in(pl_file);
+    nets_file_in(net_file);
     scl_file_in(scl_file);
     v_file_in(v_file);
 }
@@ -18,41 +18,7 @@ void parser(){
 void file_out(){
 
 }
-void nets_file_in(string input_file){
-    string word,word2,word3,word4;
-    int x1,y1,x2,y2,width;
 
-    string label;
-    string temp;
-
-    ifile.open(input_file);
-
-    if (!ifile.is_open()){
-        cout << "Error opening file: " << input_file << endl;
-        exit(1);
-    }
-
-    while (ifile >> label) {
-        if (label == "NumNets") {
-            ifile >> temp >> x1;
-            bigdie.set_nets_size(x1);
-        }
-        else if(label == "NumPins"){
-            ifile >> temp >> x1;
-            bigdie.set_pins_size(x1);
-        }
-        else if(label == "NetDegree"){
-            ifile >> temp >> x1 >> word;
-            net n;
-            n.set_net_name(word);
-            n.set_pin_amount(x1);
-            ifile >> word >> word2 >> temp >> x1 >> y1 >> temp >> temp >> temp >> word;
-
-        }
-    }
-
-    ifile.close();
-}
 void nodes_file_in(string input_file){
     string word,word2,word3,word4;
     int x1,y1,x2,y2,width;
@@ -67,6 +33,7 @@ void nodes_file_in(string input_file){
         exit(1);
     }
 
+    ifile >> word >> word >> word;  // skip UCLA nodes 1.0
     while (ifile >> label) {
         if (label == "NumNodes") {
             ifile >> temp >> x1;
@@ -78,6 +45,7 @@ void nodes_file_in(string input_file){
             for(int i=0;i<bigdie.get_num_nodes_terminal();++i){
                 ifile >> word >> x1 >> x2 >> temp;
                 macro mm;
+                mm.is_terminal = true; // 設定為terminal
                 mm.set_weight_height(x1,x2);
                 mm.set_macro_name(word);
                 bigdie.set_macro_vector(mm);
@@ -112,21 +80,64 @@ void pl_file_in(string input_file){
         exit(1);
     }
 
+    ifile >> word >> word >> word;  // skip UCLA pl 1.0
+    for(int i=0;i<bigdie.get_num_nodes_terminal();++i){
+        ifile >> word >> x1 >> y1 >> temp >> word2 >> temp;
+        bigdie.Update_Macro_mapPl(word,word2,x1,y1);
+    }
     while (ifile >> label) {
-        ifile >> temp;
-        if (label == "1.0") {
-            for(int i=0;i<bigdie.get_num_nodes_terminal();++i){
-                ifile >> word >> x1 >> y1 >> temp >> word2 >> temp;
-                bigdie.Update_Macro_mapPl(word,word2,x1,y1);
-            }
-        }
-        else{
-            ifile >> word >> x1 >> y1 >> temp >> word2;
-            bigdie.Update_Macro_mapPl(word,word2,x1,y1);
-        }
+        ifile >> word >> x1 >> y1 >> temp >> word2;
+        bigdie.Update_Macro_mapPl(word,word2,x1,y1);
     }
     ifile.close();
 
+}
+void nets_file_in(string input_file){
+    string IO,pin_name,name;
+    int x1,y1,x2,y2,num;
+
+    string label = "";
+    string temp;
+
+    ifile.open(input_file);
+
+    if (!ifile.is_open()){
+        cout << "Error opening file: " << input_file << endl;
+        exit(1);
+    }
+
+    ifile >> temp >> temp >> temp;  // skip UCLA nets 1.0
+    while (ifile >> label) {
+        if(label == "NetDegree"){
+            ifile >> temp >> num >> name;
+            net n;
+            n.set_net_name(name);
+            n.set_pin_amount(num);
+            for(int i=0;i<num;++i){
+                ifile >> name >> IO >> temp >> x1 >> y1 >> temp >> x2 >> y2 >> pin_name;
+                pin p;
+                p.set_pin_name(pin_name);
+                p.set_pin_type(IO);
+                p.set_pin_offset(x1,y1);
+                p.set_pin_x_y(x2,y2);
+                if(pin_name.size() != 2) n.ADD_Pin_NETS(pin_name.erase(0,2));   //  terminal pin name is empty ( p_ )
+                else n.ADD_Pin_NETS(NULL);
+                
+                bigdie.Find_Macro(name)->ADD_Pin_NETS(pin_name, p); // put pin into macro's pin_map
+            }
+        }
+        else if (label == "NumNets") {
+            ifile >> temp >> num;
+            bigdie.set_nets_size(num);
+        }
+        else if(label == "NumPins"){
+            ifile >> temp >> num;
+            // bigdie.set_pins_size(num);
+        }
+        
+    }
+
+    ifile.close();
 }
 void scl_file_in(string input_file){
 

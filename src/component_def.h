@@ -29,23 +29,18 @@ public:
         else if(s == "FW") direction = DIRECTION::FW;
     }
     // nets parser用
-    void UpdatePinNETS(const string &name, const string &ori, int x, int y) {
-      auto it = pinIndex.find(name);
-      if (it != pinIndex.end()) {
-        // 已存在，只更新坐标
-        size_t idx = it->second;
-        pins[idx].set_pin_x_y(x, y);
-        pins[idx].set_pin_orientation(ori);
-      } 
+    void ADD_Pin_NETS(const string &name,const pin p) {
+        pin_map.emplace(name, p);
     }
+
+
+    bool is_terminal = false; // 是否為terminal
 private:
     string name;
     DIRECTION direction;
-    string input_or_output;  
     int weight,height,x,y; 
 
-    vector<pin>pins;
-    unordered_map<string, size_t> pinIndex;
+    unordered_map<string, pin> pin_map;     // pin name to pin mapping
 };
 
 #endif
