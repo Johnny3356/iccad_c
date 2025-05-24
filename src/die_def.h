@@ -71,8 +71,6 @@ private:
     vector<pin> pins;
     vector<layer> layers;
     vector<via> vias;
-    vector<track> trackk;
-    vector<gcellgrid> grid;
     int x1,y1,x2,y2;
     int num_nodes,num_nodes_terminal;
 

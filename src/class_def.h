@@ -12,6 +12,17 @@
 
 using namespace std;
 
+enum DIRECTION{
+    N = 0,
+    S,
+    E,
+    W,
+    FN,
+    FS,
+    FE,
+    FW
+};
+
 // die_def.h
 class die;
 

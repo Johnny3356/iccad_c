@@ -3,13 +3,6 @@
 #include "bits/stdc++.h"
 
 #include "class_def.h"
-#include "net_def.h"
-
-
-enum CELL_DIRECTION{
-    N = 0,
-    FS = 1
-};
 
 class macro{
 public:
@@ -26,7 +19,14 @@ public:
         name = s;
     }
     void set_macro_orientation(string s){
-        name = s;
+        if(s == "N") direction = DIRECTION::N;
+        else if(s == "S") direction = DIRECTION::S;
+        else if(s == "E") direction = DIRECTION::E;
+        else if(s == "W") direction = DIRECTION::W;
+        else if(s == "FN") direction = DIRECTION::FN;
+        else if(s == "FS") direction = DIRECTION::FS;
+        else if(s == "FE") direction = DIRECTION::FE;
+        else if(s == "FW") direction = DIRECTION::FW;
     }
     // nets parser用
     void UpdatePinNETS(const string &name, const string &ori, int x, int y) {
@@ -40,8 +40,7 @@ public:
     }
 private:
     string name;
-    CELL_DIRECTION direction;
-    string orientation; 
+    DIRECTION direction;
     string input_or_output;  
     int weight,height,x,y; 
 

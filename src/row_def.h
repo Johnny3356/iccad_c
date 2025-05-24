@@ -4,34 +4,41 @@
 
 #include "class_def.h"
 
-enum ROW_DIRECTION{
-    N = 0,
-    FS = 1
-};
+
 
 class row{
 public:
     row() {}
-    void get_row_site_name(string r,string s,string so){
+    void set_row_site_name(string r,string s){
         rowname = r;
         sitename = s;
-        siteorient = so;
     }
-    void get_orig_xy(int x,int y){
+    void set_row_site_orient(string s){
+        if(s == "N") siteorient = DIRECTION::N;
+        else if(s == "S") siteorient = DIRECTION::S;
+        else if(s == "E") siteorient = DIRECTION::E;
+        else if(s == "W") siteorient = DIRECTION::W;
+        else if(s == "FN") siteorient = DIRECTION::FN;
+        else if(s == "FS") siteorient = DIRECTION::FS;
+        else if(s == "FE") siteorient = DIRECTION::FE;
+        else if(s == "FW") siteorient = DIRECTION::FW;
+    }
+    void set_orig_xy(int x,int y){
         origX = x;
         origY = y;
     }
-    void get_num_xy(int x,int y){
+    void set_num_xy(int x,int y){
         numX = x;
-        numY = y;       
+        numY = y;
     }
-    void get_step_xy(int x,int y){
+    void set_step_xy(int x,int y){
         stepX = x;
         stepY = y;
     }
 private:
     vector<site> sites;
-    string rowname,sitename,siteorient;
+    DIRECTION siteorient;
+    string rowname,sitename;
     int origX,origY,numX,numY,stepX,stepY;
 };
 
