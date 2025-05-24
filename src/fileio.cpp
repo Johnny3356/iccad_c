@@ -6,53 +6,19 @@ ifstream ifile;
 
 void parser(){
     // def_file_in(bigdie,rows,trackk,grid);
-    string node_file = "",pl_file = "",scl_file = "",v_file = "",net_file = "";
-    nets_file_in(net_file);
+    string node_file = "",pl_file = "",scl_file = "",v_file = "",net_file = "",sdc_file = "";
     nodes_file_in(node_file);
     pl_file_in(pl_file);
+    nets_file_in(net_file);
     scl_file_in(scl_file);
-    v_file_in(v_file);
+    sdc_file_in(sdc_file);
 }
 
 
 void file_out(){
 
 }
-void nets_file_in(string input_file){
-    string word,word2,word3,word4;
-    int x1,y1,x2,y2,width;
 
-    string label;
-    string temp;
-
-    ifile.open(input_file);
-
-    if (!ifile.is_open()){
-        cout << "Error opening file: " << input_file << endl;
-        exit(1);
-    }
-
-    while (ifile >> label) {
-        if (label == "NumNets") {
-            ifile >> temp >> x1;
-            bigdie.set_nets_size(x1);
-        }
-        else if(label == "NumPins"){
-            ifile >> temp >> x1;
-            bigdie.set_pins_size(x1);
-        }
-        else if(label == "NetDegree"){
-            ifile >> temp >> x1 >> word;
-            net n;
-            n.set_net_name(word);
-            n.set_pin_amount(x1);
-            ifile >> word >> word2 >> temp >> x1 >> y1 >> temp >> temp >> temp >> word;
-
-        }
-    }
-
-    ifile.close();
-}
 void nodes_file_in(string input_file){
     string word,word2,word3,word4;
     int x1,y1,x2,y2,width;
@@ -67,6 +33,7 @@ void nodes_file_in(string input_file){
         exit(1);
     }
 
+    ifile >> word >> word >> word;  // skip UCLA nodes 1.0
     while (ifile >> label) {
         if (label == "NumNodes") {
             ifile >> temp >> x1;
@@ -78,6 +45,7 @@ void nodes_file_in(string input_file){
             for(int i=0;i<bigdie.get_num_nodes_terminal();++i){
                 ifile >> word >> x1 >> x2 >> temp;
                 macro mm;
+                mm.is_terminal = true; // 設定為terminal
                 mm.set_weight_height(x1,x2);
                 mm.set_macro_name(word);
                 bigdie.set_macro_vector(mm);
@@ -112,26 +80,129 @@ void pl_file_in(string input_file){
         exit(1);
     }
 
+    ifile >> word >> word >> word;  // skip UCLA pl 1.0
+    for(int i=0;i<bigdie.get_num_nodes_terminal();++i){
+        ifile >> word >> x1 >> y1 >> temp >> word2 >> temp;
+        bigdie.Update_Macro_mapPl(word,word2,x1,y1);
+    }
     while (ifile >> label) {
-        ifile >> temp;
-        if (label == "1.0") {
-            for(int i=0;i<bigdie.get_num_nodes_terminal();++i){
-                ifile >> word >> x1 >> y1 >> temp >> word2 >> temp;
-                bigdie.Update_Macro_mapPl(word,word2,x1,y1);
-            }
-        }
-        else{
-            ifile >> word >> x1 >> y1 >> temp >> word2;
-            bigdie.Update_Macro_mapPl(word,word2,x1,y1);
-        }
+        ifile >> word >> x1 >> y1 >> temp >> word2;
+        bigdie.Update_Macro_mapPl(word,word2,x1,y1);
     }
     ifile.close();
 
 }
-void scl_file_in(string input_file){
+void nets_file_in(string input_file){
+    string IO,pin_name,name;
+    int x1,y1,x2,y2,num;
 
+    string label = "";
+    string temp;
+
+    ifile.open(input_file);
+
+    if (!ifile.is_open()){
+        cout << "Error opening file: " << input_file << endl;
+        exit(1);
+    }
+
+    ifile >> temp >> temp >> temp;  // skip UCLA nets 1.0
+    while (ifile >> label) {
+        if(label == "NetDegree"){
+            ifile >> temp >> num >> name;
+            net n;
+            n.set_net_name(name);
+            n.set_pin_amount(num);
+
+            for(int i=0;i<num;++i){     // all pins in this net
+                ifile >> name >> IO >> temp >> x1 >> y1 >> temp >> x2 >> y2 >> pin_name;
+                pin p;
+                p.set_pin_name(pin_name);
+                p.set_pin_type(IO);
+                p.set_pin_offset(x1,y1);
+                p.set_pin_x_y(x2,y2);
+
+                if(IO == "O") n.set_output_pin_name(pin_name); // set output pin name
+                
+                if(pin_name.size() != 2) n.ADD_Pin_NETS(pin_name.erase(0,2));   //  terminal pin name is empty ( p_ )
+                else n.ADD_Pin_NETS(NULL);
+
+                bigdie.Find_Macro(name)->ADD_Pin_NETS(pin_name, p); // put pin into macro's pin_map
+            }
+            bigdie.set_nets_vector(n); // add net to die's nets vector
+        }
+        else if (label == "NumNets") {
+            ifile >> temp >> num;
+            bigdie.set_nets_size(num);
+        }
+        else if(label == "NumPins"){
+            ifile >> temp >> num;
+            // bigdie.set_pins_size(num);
+        }
+        
+    }
+
+    ifile.close();
 }
-void v_file_in(string input_file){
+void scl_file_in(string input_file){
+    int num;
+    int site_orient,site_symmetry,coordinate;
+
+    string label = "";
+    string temp;
+
+    ifile.open(input_file);
+
+    if (!ifile.is_open()){
+        cout << "Error opening file: " << input_file << endl;
+        exit(1);
+    }
+
+    ifile >> temp >> temp >> temp;  // skip UCLA scl 1.0
+    ifile >> temp >> temp >> num;
+    bigdie.set_rows_size(num); // set rows size
+    ifile >> temp >> temp;
+    while(ifile >> label){
+        if(label == "Coordinate"){
+            ifile >> temp >> coordinate;
+        }
+        else if(label == "Height"){
+            ifile >> temp >> num;
+            row::row_height = num; // set row height
+        }
+        else if(label == "Sitewidth"){
+            ifile >> temp >> num;
+            row::site_width = num; // set site width
+        }
+        else if(label == "Sitespacing"){
+            ifile >> temp >> num;
+            row::site_spacing = num; // set site spacing
+        }
+        else if(label == "Siteorient"){
+            ifile >> temp >> site_orient;
+        }
+        else if(label == "Sitesymmetry"){
+            ifile >> temp >> site_symmetry;
+        }
+        else if(label == "SubrowOrigin"){
+            ifile >> temp >> num;
+            row::sub_row_origin = num; // set sub row origin
+        }
+        else if(label == "NumSites"){
+            ifile >> temp >> num;
+            row::site_nums = num; // set site nums
+        }
+    }
+    row r_init(site_orient, coordinate, site_symmetry);
+    bigdie.set_rows_vector(r_init); // add row to die's rows vector
+    for(int i=0;i < bigdie.get_num_rows() - 1 ; ++i){
+        row r( (++site_orient) %= 2, coordinate += row::row_height, site_symmetry);
+        bigdie.set_rows_vector(r); // add row to die's rows vector
+    }
+
+    ifile.close();
+}
+void sdc_file_in(string input_file){
 
 }
 

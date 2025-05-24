@@ -4,35 +4,39 @@
 
 #include "class_def.h"
 
-enum ROW_DIRECTION{
-    N = 0,
-    FS = 1
-};
-
 class row{
 public:
-    row() {}
-    void get_row_site_name(string r,string s,string so){
-        rowname = r;
-        sitename = s;
-        siteorient = so;
+    row(int s,int c,int sym) {
+        set_row_site_orient(s);
+        set_row_coordinate(c);
+        set_row_site_symmetry(sym);
+        site_vector_init();
     }
-    void get_orig_xy(int x,int y){
-        origX = x;
-        origY = y;
+    void set_row_site_orient(int o){
+        siteorient = (o == 1) ? N : S ; // 1: N, 0: S
     }
-    void get_num_xy(int x,int y){
-        numX = x;
-        numY = y;       
+    void set_row_site_symmetry(int s){
+        site_symmetry = bool(s);
     }
-    void get_step_xy(int x,int y){
-        stepX = x;
-        stepY = y;
+    void set_row_coordinate(int c){
+        coordinate = c;
     }
+    void site_vector_init(){
+        sites.clear();
+        sites.resize(site_nums);
+    }
+
+    static int row_height;
+    static int site_width;
+    static int site_spacing;
+    static int sub_row_origin;
+    static int site_nums;
+
 private:
     vector<site> sites;
-    string rowname,sitename,siteorient;
-    int origX,origY,numX,numY,stepX,stepY;
+    DIRECTION siteorient;
+    bool site_symmetry = true; // 是否為對稱
+    int coordinate;
 };
 
 
@@ -41,6 +45,5 @@ class site{
 public:
     site() {}
 private:
-    string name;
 };
 #endif

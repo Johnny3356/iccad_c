@@ -6,78 +6,98 @@
 
 class die{
 public:
-    die() {}
-    void setDieArea(int _x1, int _y1, int _x2, int _y2) {
-      x1 = _x1;  y1 = _y1;
-      x2 = _x2;  y2 = _y2;
-    }
-    void set_num_nodes(int x){
-      num_nodes = x;
-    }
-    void set_num_nodes_terminal(int x){
-      num_nodes_terminal = x;
-    }
-    int get_num_nodes_terminal(){
-      return num_nodes_terminal;
-    }
-    vector<macro> get_macros(){
-      return macros;
-    }
-    void set_pin_vector(pin p){
-      pins.push_back(p);
-    }
-    void set_macro_vector(macro m){
-      macros.push_back(m);
-    }
+  die() {}
+  void setDieArea(int _x1, int _y1, int _x2, int _y2) {
+    x1 = _x1;  y1 = _y1;
+    x2 = _x2;  y2 = _y2;
+  }
+  static void set_num_nodes(int x){
+    num_nodes = x;
+  }
+  static void set_num_nodes_terminal(int x){
+    num_nodes_terminal = x;
+  }
+  void set_nets_size(int x){
+    nets.resize(x);
+    num_nets = x;
+  }
+  void set_rows_size(int x){
+    rows.resize(x);
+    num_rows = x;
+  }
+  static int get_num_nodes(){
+    return num_nodes;
+  }
+  static int get_num_nodes_terminal(){
+    return num_nodes_terminal;
+  }
+  static int get_num_rows(){
+    return num_rows;
+  }
+  static int get_num_nets(){
+    return num_nets;
+  }
+  vector<macro> get_macros(){
+    return macros;
+  }
+  void set_macro_vector(macro m){
+    macros.push_back(m);
+  }
+  void set_rows_vector(row r){
+    rows.push_back(r);
+  }
+  void set_layers_vector(layer l){
+    layers.push_back(l);
+  }
+  void set_vias_vector(via v){
+    vias.push_back(v);
+  }
+  void set_nets_vector(net n){
+    nets.push_back(n);
+  }
 
-    // --- node parser 來建立向量，同時建立哈希表
+  
 
-    // --- pl parser 用的 ---
-    void Update_Pin_map_Pl(const string &name, const string &ori, int x, int y) {
-      auto it = pinIndex.find(name);
-      if (it != pinIndex.end()) {
-        // 已存在，只更新坐标
-        size_t idx = it->second;
-        pins[idx].set_pin_x_y(x, y);
-        pins[idx].set_pin_orientation(ori);
-      } 
-    }
-    // 对 macro 同理
-    void Add_Macro_map_Pl(const string &name, int x) {
-      auto it = macroIndex.find(name);
-      if (it != macroIndex.end()) {
-        macroIndex.emplace(name,x);
-      } 
-    }
-    void Update_Macro_mapPl(const string &name,const string &ori, int x, int y) {
-      auto it = macroIndex.find(name);
-      if (it != macroIndex.end()) {
-        size_t idx = it->second;
-        macros[idx].set_macro_x_y(x, y);
-        macros[idx].set_macro_orientation(ori);
-      } 
-    }
-    void set_nets_size(int x){
-      nets.resize(x);
-    }
-    void set_pins_size(int x){
-      pins.resize(x);
-    }
+
+  // --- node parser 來建立向量，同時建立哈希表
+  void Add_Macro_map_Pl(const string &name, int x) {
+    macroIndex.emplace(name,x);
+  }
+    
+  // --- pl parser 用的 ---
+  void Update_Macro_mapPl(const string &name,const string &ori, int x, int y) {
+    auto it = macroIndex.find(name);
+    if (it != macroIndex.end()) {
+      size_t idx = it->second;
+      macros[idx].set_macro_x_y(x, y);
+      macros[idx].set_macro_orientation(ori);
+    } 
+  }
+
+  macro* Find_Macro(const string &name) {
+    auto it = macroIndex.find(name);
+    if (it != macroIndex.end()) {
+      size_t idx = it->second;
+      return &macros[idx]; 
+    } 
+    else return nullptr; // 如果找不到，返回nullptr
+  }
+
+
+  static int num_nodes;
+  static int num_nodes_terminal;
+  static int num_rows;
+  static int num_nets;
 
 private:
-    vector<macro> macros;
-    vector<row> rows;
-    vector<net> nets;
-    vector<pin> pins;
-    vector<layer> layers;
-    vector<via> vias;
-    vector<track> trackk;
-    vector<gcellgrid> grid;
-    int x1,y1,x2,y2;
-    int num_nodes,num_nodes_terminal;
+  vector<macro> macros;
+  vector<row> rows;
+  vector<net> nets;
+  vector<layer> layers;
+  vector<via> vias;
+  int x1,y1,x2,y2;
 
-    unordered_map<string, size_t> pinIndex;
-    unordered_map<string, size_t> macroIndex;
+  unordered_map<string, size_t> macroIndex;
 };
 
 #endif
