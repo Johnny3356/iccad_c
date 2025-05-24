@@ -17,14 +17,43 @@ public:
   void set_num_nodes_terminal(int x){
     num_nodes_terminal = x;
   }
+  void set_nets_size(int x){
+    nets.resize(x);
+    num_nets = x;
+  }
+  void set_rows_size(int x){
+    rows.resize(x);
+    num_rows = x;
+  }
+  int get_num_nodes(){
+    return num_nodes;
+  }
   int get_num_nodes_terminal(){
     return num_nodes_terminal;
+  }
+  int get_num_rows(){
+    return num_rows;
+  }
+  int get_num_nets(){
+    return num_nets;
   }
   vector<macro> get_macros(){
     return macros;
   }
   void set_macro_vector(macro m){
     macros.push_back(m);
+  }
+  void set_rows_vector(row r){
+    rows.push_back(r);
+  }
+  void set_layers_vector(layer l){
+    layers.push_back(l);
+  }
+  void set_vias_vector(via v){
+    vias.push_back(v);
+  }
+  void set_nets_vector(net n){
+    nets.push_back(n);
   }
 
   
@@ -54,9 +83,7 @@ public:
     else return nullptr; // 如果找不到，返回nullptr
   }
 
-  void set_nets_size(int x){
-    nets.resize(x);
-  }
+  
 
 private:
   vector<macro> macros;
@@ -66,6 +93,8 @@ private:
   vector<via> vias;
   int x1,y1,x2,y2;
   int num_nodes,num_nodes_terminal;
+  int num_rows;
+  int num_nets;
 
   unordered_map<string, size_t> macroIndex;
 };

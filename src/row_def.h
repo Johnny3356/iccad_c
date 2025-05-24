@@ -4,42 +4,39 @@
 
 #include "class_def.h"
 
-
-
 class row{
 public:
-    row() {}
-    void set_row_site_name(string r,string s){
-        rowname = r;
-        sitename = s;
+    row(int s,int c,int sym) {
+        set_row_site_orient(s);
+        set_row_coordinate(c);
+        set_row_site_symmetry(sym);
+        site_vector_init();
     }
-    void set_row_site_orient(string s){
-        if(s == "N") siteorient = DIRECTION::N;
-        else if(s == "S") siteorient = DIRECTION::S;
-        else if(s == "E") siteorient = DIRECTION::E;
-        else if(s == "W") siteorient = DIRECTION::W;
-        else if(s == "FN") siteorient = DIRECTION::FN;
-        else if(s == "FS") siteorient = DIRECTION::FS;
-        else if(s == "FE") siteorient = DIRECTION::FE;
-        else if(s == "FW") siteorient = DIRECTION::FW;
+    void set_row_site_orient(int o){
+        siteorient = (o == 1) ? N : S ; // 1: N, 0: S
     }
-    void set_orig_xy(int x,int y){
-        origX = x;
-        origY = y;
+    void set_row_site_symmetry(int s){
+        site_symmetry = bool(s);
     }
-    void set_num_xy(int x,int y){
-        numX = x;
-        numY = y;
+    void set_row_coordinate(int c){
+        coordinate = c;
     }
-    void set_step_xy(int x,int y){
-        stepX = x;
-        stepY = y;
+    void site_vector_init(){
+        sites.clear();
+        sites.resize(site_nums);
     }
+
+    static int row_height;
+    static int site_width;
+    static int site_spacing;
+    static int sub_row_origin;
+    static int site_nums;
+
 private:
     vector<site> sites;
     DIRECTION siteorient;
-    string rowname,sitename;
-    int origX,origY,numX,numY,stepX,stepY;
+    bool site_symmetry = true; // 是否為對稱
+    int coordinate;
 };
 
 
@@ -48,6 +45,5 @@ class site{
 public:
     site() {}
 private:
-    string name;
 };
 #endif
