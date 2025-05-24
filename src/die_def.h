@@ -11,10 +11,10 @@ public:
     x1 = _x1;  y1 = _y1;
     x2 = _x2;  y2 = _y2;
   }
-  void set_num_nodes(int x){
+  static void set_num_nodes(int x){
     num_nodes = x;
   }
-  void set_num_nodes_terminal(int x){
+  static void set_num_nodes_terminal(int x){
     num_nodes_terminal = x;
   }
   void set_nets_size(int x){
@@ -25,16 +25,16 @@ public:
     rows.resize(x);
     num_rows = x;
   }
-  int get_num_nodes(){
+  static int get_num_nodes(){
     return num_nodes;
   }
-  int get_num_nodes_terminal(){
+  static int get_num_nodes_terminal(){
     return num_nodes_terminal;
   }
-  int get_num_rows(){
+  static int get_num_rows(){
     return num_rows;
   }
-  int get_num_nets(){
+  static int get_num_nets(){
     return num_nets;
   }
   vector<macro> get_macros(){
@@ -83,7 +83,11 @@ public:
     else return nullptr; // 如果找不到，返回nullptr
   }
 
-  
+
+  static int num_nodes;
+  static int num_nodes_terminal;
+  static int num_rows;
+  static int num_nets;
 
 private:
   vector<macro> macros;
@@ -92,9 +96,6 @@ private:
   vector<layer> layers;
   vector<via> vias;
   int x1,y1,x2,y2;
-  int num_nodes,num_nodes_terminal;
-  int num_rows;
-  int num_nets;
 
   unordered_map<string, size_t> macroIndex;
 };
