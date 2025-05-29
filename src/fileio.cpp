@@ -3,13 +3,13 @@
 extern die bigdie;
 
 ifstream ifile;
-extern string node_file,pl_file,scl_file,v_file,net_file;
+extern string nodes_file,pl_file,nets_file,scl_file,v_file;
 
 void parser(){
     // def_file_in(bigdie,rows,trackk,grid);
-    nodes_file_in(node_file);
+    nodes_file_in(nodes_file);
     pl_file_in(pl_file);
-    nets_file_in(net_file);
+    nets_file_in(nets_file);
     scl_file_in(scl_file);
     v_file_in(v_file);
 }
