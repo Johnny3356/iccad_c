@@ -3,15 +3,15 @@
 extern die bigdie;
 
 ifstream ifile;
+extern string node_file,pl_file,scl_file,v_file,net_file;
 
 void parser(){
     // def_file_in(bigdie,rows,trackk,grid);
-    string node_file = "",pl_file = "",scl_file = "",v_file = "",net_file = "",sdc_file = "";
     nodes_file_in(node_file);
     pl_file_in(pl_file);
     nets_file_in(net_file);
     scl_file_in(scl_file);
-    sdc_file_in(sdc_file);
+    v_file_in(v_file);
 }
 
 
@@ -202,9 +202,42 @@ void scl_file_in(string input_file){
 
     ifile.close();
 }
-void sdc_file_in(string input_file){
+void v_file_in(string input_file){
+    int num;
+    int site_orient,site_symmetry,coordinate;
 
+    char label = ';';
+    string macro_name,type_name;
+
+    ifile.open(input_file);
+
+    if (!ifile.is_open()){
+        cout << "Error opening file: " << input_file << endl;
+        exit(1);
+    }
+
+    while(macro_name != "instantiations"){
+        ifile >> macro_name; // skip until instantiations
+    }
+
+    while(1){
+        if(label == ';'){
+            ifile >> type_name >> macro_name;
+            if(type_name == "endmodule") break; // end of module
+            bigdie.Find_Macro(macro_name)->set_macro_type(type_name); // set macro type
+        }
+        ifile >> label; // read until ';'
+    }
+    
+    ifile.close();
 }
+
+
+
+
+// void sdc_file_in(string input_file){
+
+// }
 
 
 

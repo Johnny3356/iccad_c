@@ -6,10 +6,12 @@ NTUST EE B11130024 Yao-An,Lo
 #include "fileio.h"
 #include <chrono>
 
-#define ARGC_NUMS 5
+#define ARGC_NUMS 6
 #define DEBUG 1 // 1: open debug mode
 
 die bigdie;
+
+string node_file,pl_file,scl_file,v_file,net_file;
 
 int main(int argc, char** argv) {
     auto start = chrono::high_resolution_clock::now();      // get the start time
@@ -18,6 +20,11 @@ int main(int argc, char** argv) {
         if(DEBUG) system("pause");
         exit(1);
     }
+    node_file = argv[1];
+    pl_file = argv[2];
+    scl_file = argv[3];
+    v_file = argv[4];
+    net_file = argv[5];
 
     parser();
 

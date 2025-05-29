@@ -6,58 +6,32 @@
 
 class die{
 public:
-  die() {}
-  void setDieArea(int _x1, int _y1, int _x2, int _y2) {
-    x1 = _x1;  y1 = _y1;
-    x2 = _x2;  y2 = _y2;
-  }
-  static void set_num_nodes(int x){
-    num_nodes = x;
-  }
-  static void set_num_nodes_terminal(int x){
-    num_nodes_terminal = x;
-  }
-  void set_nets_size(int x){
-    nets.resize(x);
-    num_nets = x;
-  }
-  void set_rows_size(int x){
-    rows.resize(x);
-    num_rows = x;
-  }
-  static int get_num_nodes(){
-    return num_nodes;
-  }
-  static int get_num_nodes_terminal(){
-    return num_nodes_terminal;
-  }
-  static int get_num_rows(){
-    return num_rows;
-  }
-  static int get_num_nets(){
-    return num_nets;
-  }
-  vector<macro> get_macros(){
-    return macros;
-  }
-  void set_macro_vector(macro m){
-    macros.push_back(m);
-  }
-  void set_rows_vector(row r){
-    rows.push_back(r);
-  }
-  void set_layers_vector(layer l){
-    layers.push_back(l);
-  }
-  void set_vias_vector(via v){
-    vias.push_back(v);
-  }
-  void set_nets_vector(net n){
-    nets.push_back(n);
-  }
-
-  
-
+    die() {}
+    void setDieArea(int _x1, int _y1, int _x2, int _y2) {
+        x1 = _x1;  y1 = _y1;
+        x2 = _x2;  y2 = _y2;
+    }
+    void set_nets_size(int x) {
+        nets.resize(x);
+        num_nets = x;
+    }
+    void set_rows_size(int x) {
+        rows.resize(x);
+        num_rows = x;
+    }
+    static int get_num_nodes() { return num_nodes; }
+    static void set_num_nodes(int x) { num_nodes = x; }
+    static void set_num_nodes_terminal(int x) { num_nodes_terminal = x; }
+    
+    static int get_num_nodes_terminal() { return num_nodes_terminal; }
+    static int get_num_rows() { return num_rows; }
+    static int get_num_nets() { return num_nets; }
+    vector<macro> get_macros() const { return macros; }
+    void set_macro_vector(macro m) { macros.push_back(m); }
+    void set_rows_vector(row r) { rows.push_back(r); }
+    void set_layers_vector(layer l) { layers.push_back(l); }
+    void set_vias_vector(via v) { vias.push_back(v); }
+    void set_nets_vector(net n) { nets.push_back(n); }
 
   // --- node parser 來建立向量，同時建立哈希表
   void Add_Macro_map_Pl(const string &name, int x) {
@@ -83,6 +57,13 @@ public:
     else return nullptr; // 如果找不到，返回nullptr
   }
 
+  pin* Find_Pin(const string &macro_name, const string &pin_name) {
+    macro* m = Find_Macro(macro_name);
+    if (m) {
+      return m->Find_Pin(pin_name);
+    }
+    return nullptr;
+  }
 
   static int num_nodes;
   static int num_nodes_terminal;

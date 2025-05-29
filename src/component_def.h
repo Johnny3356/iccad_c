@@ -18,6 +18,9 @@ public:
     void set_macro_name(string s){
         name = s;
     }
+    void set_macro_type(string s){
+        macro_type = s;
+    }
     void set_macro_orientation(string s){
         if(s == "N") direction = DIRECTION::N;
         else if(s == "S") direction = DIRECTION::S;
@@ -33,10 +36,18 @@ public:
         pin_map.emplace(name, p);
     }
 
+    pin* Find_Pin(const string &pin_name) {
+        auto it = pin_map.find(pin_name);
+        if (it != pin_map.end()) {
+            return &it->second; // 返回找到的pin
+        }
+        return nullptr; // 如果找不到，返回nullptr
+    }
 
     bool is_terminal = false; // 是否為terminal
 private:
     string name;
+    string macro_type; // macro type
     DIRECTION direction;
     int weight,height,x,y; 
 
