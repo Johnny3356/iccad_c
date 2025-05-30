@@ -1,17 +1,19 @@
 #include "fileio.h"
+#include "die_def.h"
 
 extern die bigdie;
 
 ifstream ifile;
+extern string nodes_file,pl_file,nets_file,scl_file,v_file;
+
 
 void parser(){
     // def_file_in(bigdie,rows,trackk,grid);
-    string node_file = "",pl_file = "",scl_file = "",v_file = "",net_file = "",sdc_file = "";
-    nodes_file_in(node_file);
+    nodes_file_in(nodes_file);
     pl_file_in(pl_file);
-    nets_file_in(net_file);
+    nets_file_in(nets_file);
     scl_file_in(scl_file);
-    sdc_file_in(sdc_file);
+    v_file_in(v_file);
 }
 
 
@@ -85,8 +87,8 @@ void pl_file_in(string input_file){
         ifile >> word >> x1 >> y1 >> temp >> word2 >> temp;
         bigdie.Update_Macro_mapPl(word,word2,x1,y1);
     }
-    while (ifile >> label) {
-        ifile >> word >> x1 >> y1 >> temp >> word2;
+    while (ifile >> word) {
+        ifile >> x1 >> y1 >> temp >> word2;
         bigdie.Update_Macro_mapPl(word,word2,x1,y1);
     }
     ifile.close();
@@ -94,8 +96,8 @@ void pl_file_in(string input_file){
 }
 void nets_file_in(string input_file){
     string IO,pin_name,name;
-    int x1,y1,x2,y2,num;
-
+    int x1,y1,num;
+    float x2,y2;
     string label = "";
     string temp;
 
@@ -117,15 +119,15 @@ void nets_file_in(string input_file){
             for(int i=0;i<num;++i){     // all pins in this net
                 ifile >> name >> IO >> temp >> x1 >> y1 >> temp >> x2 >> y2 >> pin_name;
                 pin p;
+                pin_name.erase(0,2);
                 p.set_pin_name(pin_name);
                 p.set_pin_type(IO);
                 p.set_pin_offset(x1,y1);
                 p.set_pin_x_y(x2,y2);
 
-                if(IO == "O") n.set_output_pin_name(pin_name); // set output pin name
-                
-                if(pin_name.size() != 2) n.ADD_Pin_NETS(pin_name.erase(0,2));   //  terminal pin name is empty ( p_ )
-                else n.ADD_Pin_NETS(NULL);
+                if(IO == "O") n.set_output_macro_name(name); // set output macro name
+
+                n.ADD_Pin_NETS(name,pin_name);   //  terminal pin name is ( p_ )
 
                 bigdie.Find_Macro(name)->ADD_Pin_NETS(pin_name, p); // put pin into macro's pin_map
             }
@@ -133,7 +135,7 @@ void nets_file_in(string input_file){
         }
         else if (label == "NumNets") {
             ifile >> temp >> num;
-            bigdie.set_nets_size(num);
+            bigdie.set_num_nets(num);
         }
         else if(label == "NumPins"){
             ifile >> temp >> num;
@@ -160,8 +162,7 @@ void scl_file_in(string input_file){
 
     ifile >> temp >> temp >> temp;  // skip UCLA scl 1.0
     ifile >> temp >> temp >> num;
-    bigdie.set_rows_size(num); // set rows size
-    ifile >> temp >> temp;
+    bigdie.set_num_rows(num); // set rows size
     while(ifile >> label){
         if(label == "Coordinate"){
             ifile >> temp >> coordinate;
@@ -192,6 +193,9 @@ void scl_file_in(string input_file){
             ifile >> temp >> num;
             row::site_nums = num; // set site nums
         }
+        else if(label == "End"){
+            break; 
+        }
     }
     row r_init(site_orient, coordinate, site_symmetry);
     bigdie.set_rows_vector(r_init); // add row to die's rows vector
@@ -202,9 +206,43 @@ void scl_file_in(string input_file){
 
     ifile.close();
 }
-void sdc_file_in(string input_file){
+void v_file_in(string input_file){
+    int num;
+    int site_orient,site_symmetry,coordinate;
 
+    char label = ';';
+    string macro_name,type_name;
+
+    ifile.open(input_file);
+
+    if (!ifile.is_open()){
+        cout << "Error opening file: " << input_file << endl;
+        exit(1);
+    }
+
+    while(macro_name != "instantiations"){
+        ifile >> macro_name; // skip until instantiations
+    }
+
+    while(1){
+        if(label == ';'){
+            ifile >> type_name >> macro_name;
+            if(type_name == "endmodule") break; // end of module
+            if(macro_name[0] == '\\') macro_name.erase(0, 1); // remove leading backslash if exists
+            bigdie.Find_Macro(macro_name)->set_macro_type(type_name); // set macro type
+        }
+        ifile >> label; // read until ';'
+    }
+    
+    ifile.close();
 }
+
+
+
+
+// void sdc_file_in(string input_file){
+
+// }
 
 
 
