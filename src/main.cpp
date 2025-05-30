@@ -3,6 +3,7 @@ NTUST EE B11107047 Bi-Huei,Peng
 NTUST EE B11130024 Yao-An,Lo
 */
 #include "class_def.h"
+#include "die_def.h"
 #include "fileio.h"
 #include <chrono>
 

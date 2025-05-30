@@ -3,6 +3,7 @@
 #include "bits/stdc++.h"
 
 #include "class_def.h"
+#include "layer_def.h"
 
 class net{
 public:
@@ -13,15 +14,15 @@ public:
     void set_pin_amount(int x){
         pin_amount = x;
     }
-    void set_output_pin_name(string s){
-        output_pin_name = s;
+    void set_output_macro_name(string s){
+        output_macro_name = s;
     }
-    void ADD_Pin_NETS(const string pin_name) {
-        pin_map.emplace(name, pin_name);
+    void ADD_Pin_NETS(const string macro_name,const string pin_name) {
+        pin_map.emplace(macro_name, pin_name);
     }
 private:
     string name;
-    string output_pin_name;
+    string output_macro_name;
     int pin_amount;
     unordered_map<string,string> pin_map; // macro name to pin name
 };

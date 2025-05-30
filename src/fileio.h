@@ -1,6 +1,5 @@
 #ifndef _FILEIO_H_
 #define _FILEIO_H_
-#include "bits/stdc++.h"
 
 #include "class_def.h"
 

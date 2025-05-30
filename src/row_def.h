@@ -4,8 +4,10 @@
 
 #include "class_def.h"
 
+class site;
 class row{
 public:
+    row() {}
     row(int s,int c,int sym) {
         set_row_site_orient(s);
         set_row_coordinate(c);
@@ -13,7 +15,7 @@ public:
         site_vector_init();
     }
     void set_row_site_orient(int o){
-        siteorient = (o == 1) ? N : S ; // 1: N, 0: S
+        siteorient = (o == 1) ? N : FS ; // 1: N, 0: S
     }
     void set_row_site_symmetry(int s){
         site_symmetry = bool(s);

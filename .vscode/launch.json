@@ -7,11 +7,11 @@
             "request": "launch",
             "program": "${workspaceFolder}\\bin\\main.exe", // 編譯後的執行檔路徑
             "args": [   // 可選的命令列參數
-                "${workspaceFolder}\\ICCAD25_ProbC\\aes_cipher_top\\aes_cipher_top.nodes",
-                "${workspaceFolder}\\ICCAD25_ProbC\\aes_cipher_top\\aes_cipher_top.pl",
-                "${workspaceFolder}\\ICCAD25_ProbC\\aes_cipher_top\\aes_cipher_top.nets",
-                "${workspaceFolder}\\ICCAD25_ProbC\\aes_cipher_top\\aes_cipher_top.scl",
-                "${workspaceFolder}\\ICCAD25_ProbC\\aes_cipher_top\\aes_cipher_top.v",
+                "${workspaceFolder}\\ICCAD25_PorbC\\aes_cipher_top\\aes_cipher_top.nodes",
+                "${workspaceFolder}\\ICCAD25_PorbC\\aes_cipher_top\\aes_cipher_top.pl",
+                "${workspaceFolder}\\ICCAD25_PorbC\\aes_cipher_top\\aes_cipher_top.nets",
+                "${workspaceFolder}\\ICCAD25_PorbC\\aes_cipher_top\\aes_cipher_top.scl",
+                "${workspaceFolder}\\ICCAD25_PorbC\\aes_cipher_top\\aes_cipher_top.v",
                 ], 
             "stopAtEntry": false, // 設為 true 表示程式會在入口點暫停
             "cwd": "${workspaceFolder}", // 程式的工作目錄

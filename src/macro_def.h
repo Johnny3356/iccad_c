@@ -1,7 +1,7 @@
 #ifndef _COMPONENTDEF_
 #define _COMPONENTDEF_
-#include "bits/stdc++.h"
 
+#include "net_def.h"
 #include "class_def.h"
 
 class macro{
@@ -21,28 +21,14 @@ public:
     void set_macro_type(string s){
         macro_type = s;
     }
-    void set_macro_orientation(string s){
-        if(s == "N") direction = DIRECTION::N;
-        else if(s == "S") direction = DIRECTION::S;
-        else if(s == "E") direction = DIRECTION::E;
-        else if(s == "W") direction = DIRECTION::W;
-        else if(s == "FN") direction = DIRECTION::FN;
-        else if(s == "FS") direction = DIRECTION::FS;
-        else if(s == "FE") direction = DIRECTION::FE;
-        else if(s == "FW") direction = DIRECTION::FW;
-    }
+    void set_macro_orientation(string s);
+
     // nets parser用
-    void ADD_Pin_NETS(const string &name,const pin p) {
-        pin_map.emplace(name, p);
+    void ADD_Pin_NETS(const string &pin_name,const pin p) {
+        pin_map.emplace(pin_name, p);
     }
 
-    pin* Find_Pin(const string &pin_name) {
-        auto it = pin_map.find(pin_name);
-        if (it != pin_map.end()) {
-            return &it->second; // 返回找到的pin
-        }
-        return nullptr; // 如果找不到，返回nullptr
-    }
+    pin* Find_Pin(const string &pin_name);
 
     bool is_terminal = false; // 是否為terminal
 private:
