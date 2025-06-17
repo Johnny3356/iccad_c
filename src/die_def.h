@@ -52,7 +52,7 @@ private:
     vector<via> vias;
     int x1,y1,x2,y2;
 
-    unordered_map<string, size_t> macroIndex;
+    unordered_map<string, size_t> macroIndex; // macro 的map(name,index)
 };
 
 #endif

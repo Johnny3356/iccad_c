@@ -28,6 +28,9 @@ int main(int argc, char** argv) {
     v_file = argv[5];
 
     parser();
+    ofstream pl_out("aes_chiper_top.pl");
+    pl_file_out(pl_out);
+    pl_out.close();
 
 
     // output the program running time

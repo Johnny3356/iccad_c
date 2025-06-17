@@ -10,6 +10,7 @@ void nodes_file_in(string);
 void pl_file_in(string);
 void scl_file_in(string);
 void v_file_in(string);
+void pl_file_out(ostream &outfile);
 // void sdc_file_in(string);
 
 #endif

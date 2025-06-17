@@ -15,13 +15,23 @@ public:
         x = xx;
         y = yy;
     }
+    int get_macro_x(){
+        return x;
+    }
+    int get_macro_y(){
+        return y;
+    }
     void set_macro_name(string s){
         name = s;
+    }
+    string get_macro_name(){
+        return name;
     }
     void set_macro_type(string s){
         macro_type = s;
     }
     void set_macro_orientation(string s);
+    string get_macro_orientation();
 
     // nets parser用
     void ADD_Pin_NETS(const string &pin_name,const pin p) {
