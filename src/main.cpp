@@ -29,7 +29,9 @@ int main(int argc, char** argv) {
 
     parser();
     ofstream pl_out("aes_chiper_top.pl");
+    ofstream eco_out("ECO_changelist.changelist");
     pl_file_out(pl_out);
+    eco_file_out(eco_out);
     pl_out.close();
 
 

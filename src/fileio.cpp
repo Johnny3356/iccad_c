@@ -298,3 +298,8 @@ void pl_file_out(ostream &outfile){
     }
 
 }
+void eco_file_out(ostream &outfile){
+    outfile << " " ;
+    
+
+}
