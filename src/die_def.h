@@ -31,13 +31,17 @@ public:
 
     // --- node parser 來建立向量，同時建立哈希表
     void Add_Macro_map_Pl(const string &name, int x);
-    
+
+    void Add_NET_map(const string &name, int x);
+
     // --- pl parser 用的 ---
     void Update_Macro_mapPl(const string &name,const string &ori, int x, int y);
 
     macro* Find_Macro(const string &name);
 
     pin* Find_Pin(const string &macro_name, const string &pin_name);
+
+    net* Find_Net(const string &name);
 
     static int num_nodes;
     static int num_nodes_terminal;
@@ -52,6 +56,7 @@ private:
     vector<via> vias;
     int x1,y1,x2,y2;
 
+    unordered_map<string, size_t> netIndex; 
     unordered_map<string, size_t> macroIndex;
 };
 

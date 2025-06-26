@@ -10,6 +10,10 @@ void die::Add_Macro_map_Pl(const string &name, int x) {
     macroIndex.emplace(name,x);
 }
 
+void die::Add_NET_map(const string &name, int x) {
+    netIndex.emplace(name,x);
+}
+
 // --- pl parser 用的 ---
 void die::Update_Macro_mapPl(const string &name,const string &ori, int x, int y) {
     auto it = macroIndex.find(name);
@@ -35,4 +39,13 @@ pin* die::Find_Pin(const string &macro_name, const string &pin_name) {
         return m->Find_Pin(pin_name);
     }
     return nullptr;
+}
+
+net* die::Find_Net(const string &name) {
+    auto it = netIndex.find(name);
+    if (it != netIndex.end()) {
+        size_t idx = it->second;
+        return &nets[idx]; 
+    } 
+    else return nullptr; // 如果找不到，返回nullptr
 }

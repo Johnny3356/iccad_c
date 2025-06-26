@@ -12,4 +12,6 @@ void scl_file_in(string);
 void v_file_in(string);
 // void sdc_file_in(string);
 
+void gen_change_list(string);
+
 #endif

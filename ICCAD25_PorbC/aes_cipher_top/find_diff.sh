@@ -1,0 +1,1 @@
+diff -u ./placed_opt_before.def ./placed_opt_after.def | grep '^\+' | sed -e 's/\\\[/[/g' -e 's/\\\]/]/g' > diff.txt

@@ -14,11 +14,45 @@ void parser(){
     nets_file_in(nets_file);
     scl_file_in(scl_file);
     v_file_in(v_file);
+    gen_change_list(".\\ICCAD25_PorbC\\aes_cipher_top\\diff.txt");
 }
 
 
-void file_out(){
+void gen_change_list(string input_file){
+    ifile.open(input_file);
+    string ofile = ".\\output\\ECO_changelist.changelist";
+    ofstream ofile_stream(ofile);
+    vector<macro> buffer_list;
 
+    if (!ifile.is_open()){
+        cout << "Error opening file: " << input_file << endl;
+        exit(1);
+    }
+
+    string word,cell_name,cell_type;
+
+    while (word != "+COMPONENTS"){
+        ifile >> word; // skip until +COMPONENTS
+    }
+    ifile >> word >> word >> word;
+    while (word != "+NETS"){
+        ifile >> word >> cell_name >> cell_type;
+        while (word != ";") ifile >> word; // skip until ';'
+        ifile >> word; // read next word
+        if(bigdie.Find_Macro(cell_name) == nullptr){
+            macro m;
+            m.set_macro_name(cell_name);
+            m.set_macro_type(cell_type);
+            buffer_list.push_back(m);
+        }
+        else{
+            ofile_stream << "size_cell " << cell_name << " " << cell_type << endl;
+        }
+    }
+    ifile >> word >> word >> word; 
+    
+    ifile.close();
+    ofile_stream.close();
 }
 
 void nodes_file_in(string input_file){
@@ -96,7 +130,7 @@ void pl_file_in(string input_file){
 }
 void nets_file_in(string input_file){
     string IO,pin_name,name;
-    int x1,y1,num;
+    int x1,y1,num,net_num = 0;
     float x2,y2;
     string label = "";
     string temp;
@@ -115,6 +149,7 @@ void nets_file_in(string input_file){
             net n;
             n.set_net_name(name);
             n.set_pin_amount(num);
+            bigdie.Add_NET_map(name, net_num); // add net to die's net map
 
             for(int i=0;i<num;++i){     // all pins in this net
                 ifile >> name >> IO >> temp >> x1 >> y1 >> temp >> x2 >> y2 >> pin_name;
@@ -132,6 +167,7 @@ void nets_file_in(string input_file){
                 bigdie.Find_Macro(name)->ADD_Pin_NETS(pin_name, p); // put pin into macro's pin_map
             }
             bigdie.set_nets_vector(n); // add net to die's nets vector
+            net_num++;
         }
         else if (label == "NumNets") {
             ifile >> temp >> num;
