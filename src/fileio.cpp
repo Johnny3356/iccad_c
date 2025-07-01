@@ -14,7 +14,8 @@ void parser(){
     nets_file_in(nets_file);
     scl_file_in(scl_file);
     v_file_in(v_file);
-    gen_change_list(".\\ICCAD25_PorbC\\aes_cipher_top\\diff.txt");
+    system("./temp/find_diff.sh");
+    gen_change_list("./temp/diff.txt");
 }
 
 
@@ -92,7 +93,6 @@ void gen_change_list(string input_file){
     ifile.close();
     ofile_stream.close();
 }
-
 void nodes_file_in(string input_file){
     string word,word2,word3,word4;
     int x1,y1,x2,y2,width;

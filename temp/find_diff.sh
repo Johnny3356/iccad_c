@@ -1,0 +1,2 @@
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+diff -u $SCRIPT_DIR/placed_opt_before.def $SCRIPT_DIR/placed_opt_after.def | grep '^\+' | sed -e 's/\\\[/[/g' -e 's/\\\]/]/g' > $SCRIPT_DIR/diff.txt
