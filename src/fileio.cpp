@@ -14,14 +14,14 @@ void parser(){
     nets_file_in(nets_file);
     scl_file_in(scl_file);
     v_file_in(v_file);
-    system("./temp/find_diff.sh");
+    system("bash ./temp/find_diff.sh");
     gen_change_list("./temp/diff.txt");
 }
 
 
 void gen_change_list(string input_file){
     ifile.open(input_file);
-    string ofile = ".\\output\\ECO_changelist.changelist";
+    string ofile = "./output/ECO_changelist.changelist";
     ofstream ofile_stream(ofile);
     unordered_map<string, string> buffer_list;   // key: cell_name, value: cell_type
 
