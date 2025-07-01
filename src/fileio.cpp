@@ -22,7 +22,7 @@ void gen_change_list(string input_file){
     ifile.open(input_file);
     string ofile = ".\\output\\ECO_changelist.changelist";
     ofstream ofile_stream(ofile);
-    vector<macro> buffer_list;
+    unordered_map<string, string> buffer_list;   // key: cell_name, value: cell_type
 
     if (!ifile.is_open()){
         cout << "Error opening file: " << input_file << endl;
@@ -35,15 +35,14 @@ void gen_change_list(string input_file){
         ifile >> word; // skip until +COMPONENTS
     }
     ifile >> word >> word >> word;
+    
+    // gate_sizing 
     while (word != "+NETS"){
         ifile >> word >> cell_name >> cell_type;
-        while (word != ";") ifile >> word; // skip until ';'
+        getline(ifile, word); // read the rest of the line
         ifile >> word; // read next word
         if(bigdie.Find_Macro(cell_name) == nullptr){
-            macro m;
-            m.set_macro_name(cell_name);
-            m.set_macro_type(cell_type);
-            buffer_list.push_back(m);
+            buffer_list[cell_name] = cell_type;
         }
         else{
             ofile_stream << "size_cell " << cell_name << " " << cell_type << endl;
@@ -51,6 +50,45 @@ void gen_change_list(string input_file){
     }
     ifile >> word >> word >> word; 
     
+    // buffer insertion
+    string net_name;
+    while(!ifile.eof()){
+        ifile >> word >> net_name;
+        if(bigdie.Find_Net(net_name) == nullptr){
+            string word1,word2,word3,word4;
+            string buffer_cell_name;
+            vector<string> buffer_loads;
+            while(word4 != ";"){
+                ifile >> word1 >> word2 >> word3 >> word4; // read until ;
+                if(word4 == ";") break; // end of this net
+                if(word1 == "+"){
+                    word1 = word2;
+                    word2 = word3;
+                    word3 = word4;
+                    ifile >> word4;
+                }
+                if(word3 == "Y"){
+                    buffer_cell_name = word2;
+                }
+                else{
+                    buffer_loads.push_back(word2+"/"+word3); // collect loads
+                }
+            }
+            ifile >> word;
+
+            ofile_stream << "insert_buffer {";
+            for(auto &load : buffer_loads){
+                ofile_stream << load << " ";
+            }
+            ofile_stream << "} " << buffer_list[buffer_cell_name] << " " << buffer_cell_name << " " << net_name << endl;
+        }
+        else{
+            while(word != ";") ifile >> word; // skip until ;
+            ifile >> word; // read next word
+            continue;
+        }
+    }
+
     ifile.close();
     ofile_stream.close();
 }
