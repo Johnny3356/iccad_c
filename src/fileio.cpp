@@ -14,6 +14,7 @@ void parser(){
     nets_file_in(nets_file);
     scl_file_in(scl_file);
     v_file_in(v_file);
+    //system("./openroad/bin/openroad ./ICCAD25_PorbC/openRoad_eval_script/try_def.tcl");
     system("bash ./temp/find_diff.sh");
     gen_change_list("./temp/diff.txt");
 }

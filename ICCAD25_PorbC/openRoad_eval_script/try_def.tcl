@@ -30,3 +30,4 @@ puts "writing optimized def.."
 write_def $main_dir/temp/placed_opt_after.def
 
 report_power
+exit
